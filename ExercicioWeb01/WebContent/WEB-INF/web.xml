@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<context-param>
+		<param-name>nome</param-name>
+		<param-value>admin</param-value>
+	</context-param>
+	<context-param>
+		<param-name>senha</param-name>
+		<param-value>admin</param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>serveltHorario</servlet-name>
+		<servlet-class>control.horarios</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>serveltHorario</servlet-name>
+		<url-pattern>/carregarLocalidade.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>telal</servlet-name>
+		<servlet-class>control.LoginTela</servlet-class>
+		
+		<init-param>
+			<param-name>mensagemBoasVindas</param-name>
+			<param-value>Muito obrigado por acessar ao site.</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>telal</servlet-name>
+		<url-pattern>/logar.do</url-pattern>
+
+		
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>telalsair</servlet-name>
+		<servlet-class>control.LoginTela</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>telalsair</servlet-name>
+		<url-pattern>/sair.do</url-pattern>
+
+	</servlet-mapping>
+	
+		<servlet>
+		<servlet-name>buscarTrecho</servlet-name>
+		<servlet-class>control.trecho</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>buscarTrecho</servlet-name>
+		<url-pattern>/buscarTrecho.do</url-pattern>
+
+	</servlet-mapping>
+	
+
+<listener>
+<listener-class>
+             control.TestarListener
+        </listener-class>
+</listener>
+
+</web-app>
