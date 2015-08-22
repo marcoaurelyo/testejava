@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+<h:body>
+
+	<ui:composition template="layout.xhtml">
+		<ui:define name="content">
+
+
+			<h:form id="form">
+				<p:dataGrid var="produto" value="#{produtoBean.listaProdutos}"
+					columns="3" layout="tabular" rows="12" paginator="true"
+					id="listaProdutos"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="6,12,16">
+
+
+					<p:panel header="#{produto.descricao}" style="text-align:center">
+						<p:growl id="growl" showDetail="true" sticky="true" />
+						<h:panelGrid columns="1" style="width:100%">
+
+							<h:outputText value="#{produto.descricao}" />
+
+							<p:commandLink update=":form:produtoDetail"
+								oncomplete="PF('produtoDialog').show()" title="View Detail">
+								<h:outputText styleClass="ui-icon ui-icon-search"
+									style="margin:0 auto;" />
+								<f:setPropertyActionListener value="#{produto}"
+									target="#{produtoBean.produto}" />
+							</p:commandLink>
+
+							<p:inputText id="Quantidade"
+								value="#{carrinhoBean.quantidadeItem}"
+								immediate="true"
+								required="true" requiredMessage="Favor informar a quantidade."
+								update="form">
+							</p:inputText>
+
+							<p:commandButton value="Adicionar ao carrinho" id="addCarinho"
+								action="#{carrinhoBean.addProduto}" update="form">
+								<f:setPropertyActionListener value="#{produto}"
+									target="#{carrinhoBean.produto}" />
+							</p:commandButton>
+
+						</h:panelGrid>
+					</p:panel>
+
+				</p:dataGrid>
+
+				<p:dialog header="Descrição Produto" widgetVar="produtoDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="produtoDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty produtoBean.produto}"
+							columnClasses="label,value">
+
+							<f:facet name="header">
+								<p:graphicImage
+									name="demo/images/car/#{dataGridView.selectedCar.brand}-big.gif" />
+							</f:facet>
+
+							<h:outputText value="Código:" />
+							<h:outputText value="#{produtoBean.produto.idProduto}" />
+
+							<h:outputText value="Descrição:" />
+							<h:outputText value="#{produtoBean.produto.descricao}" />
+
+							<h:outputText value="Valor" />
+							<h:outputText value="#{produtoBean.produto.preco}" />
+
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+			</h:form>
+
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

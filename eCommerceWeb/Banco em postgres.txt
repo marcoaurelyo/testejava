@@ -1,0 +1,187 @@
+-- Table: categoria
+
+-- DROP TABLE categoria;
+
+CREATE TABLE categoria
+(
+  idcategoria serial NOT NULL,
+  descricao character varying(45),
+  idusuario integer NOT NULL,
+  CONSTRAINT categoria_pkey PRIMARY KEY (idcategoria),
+  CONSTRAINT fk_categoria_usuario_idx FOREIGN KEY (idusuario)
+      REFERENCES usuario (idusuario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE categoria
+  OWNER TO postgres;
+
+-- Table: cliente
+
+-- DROP TABLE cliente;
+
+CREATE TABLE cliente
+(
+  idcliente serial NOT NULL,
+  nome character varying(45),
+  cpfcgc character varying(20),
+  sexo character varying(1),
+  datanascimento date,
+  idusuario integer NOT NULL,
+  CONSTRAINT "Pk_Cliente" PRIMARY KEY (idcliente),
+  CONSTRAINT "Fk_cliente_usuario_idx" FOREIGN KEY (idusuario)
+      REFERENCES usuario (idusuario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE cliente
+  OWNER TO postgres;
+
+-- Table: itempedido
+
+-- DROP TABLE itempedido;
+
+CREATE TABLE itempedido
+(
+  iditempedido serial NOT NULL,
+  quantidade integer,
+  precounitario numeric,
+  precototal numeric,
+  idpedido integer NOT NULL,
+  idproduto integer NOT NULL,
+  CONSTRAINT itempedido_pkey PRIMARY KEY (iditempedido),
+  CONSTRAINT fk_itempedido_pedido FOREIGN KEY (idpedido)
+      REFERENCES pedido (idpedido) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_itempedido_produto FOREIGN KEY (idproduto)
+      REFERENCES produto (idproduto) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE itempedido
+  OWNER TO postgres;
+
+-- Table: marca
+
+-- DROP TABLE marca;
+
+CREATE TABLE marca
+(
+  idmarca serial NOT NULL,
+  descricao character varying(45),
+  idusuario integer NOT NULL,
+  CONSTRAINT marca_pkey PRIMARY KEY (idmarca),
+  CONSTRAINT fk_marca_usuario_idx FOREIGN KEY (idusuario)
+      REFERENCES usuario (idusuario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE marca
+  OWNER TO postgres;
+
+-- Table: pedido
+
+-- DROP TABLE pedido;
+
+CREATE TABLE pedido
+(
+  idpedido serial NOT NULL,
+  precototal numeric,
+  idusuario integer NOT NULL,
+  idcliente integer NOT NULL,
+  CONSTRAINT pedido_pkey PRIMARY KEY (idpedido),
+  CONSTRAINT fk_pedido_cliente FOREIGN KEY (idcliente)
+      REFERENCES cliente (idcliente) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_pedido_usuario FOREIGN KEY (idusuario)
+      REFERENCES usuario (idusuario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE pedido
+  OWNER TO postgres;
+
+-- Table: produto
+
+-- DROP TABLE produto;
+
+CREATE TABLE produto
+(
+  idproduto serial NOT NULL,
+  descricao character varying(45),
+  preco numeric,
+  idcategoria integer NOT NULL,
+  idmarca integer NOT NULL,
+  idtipoproduto integer NOT NULL,
+  idusuario integer NOT NULL,
+  CONSTRAINT produto_pkey PRIMARY KEY (idproduto),
+  CONSTRAINT fk_produto_categoria FOREIGN KEY (idcategoria)
+      REFERENCES categoria (idcategoria) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_produto_marca_idx FOREIGN KEY (idmarca)
+      REFERENCES marca (idmarca) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_produto_tipo_prod_idx FOREIGN KEY (idtipoproduto)
+      REFERENCES tipoproduto (idtipoproduto) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_produto_usuario_idx FOREIGN KEY (idusuario)
+      REFERENCES usuario (idusuario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE produto
+  OWNER TO postgres;
+
+-- Table: tipoproduto
+
+-- DROP TABLE tipoproduto;
+
+CREATE TABLE tipoproduto
+(
+  idtipoproduto serial NOT NULL,
+  descricao character varying(45),
+  idusuario integer NOT NULL,
+  "idSubTipo" integer,
+  CONSTRAINT tipoproduto_pkey PRIMARY KEY (idtipoproduto),
+  CONSTRAINT fk_tipo_produto_usuario_idx FOREIGN KEY (idusuario)
+      REFERENCES usuario (idusuario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_tipo_subtipo FOREIGN KEY ("idSubTipo")
+      REFERENCES tipoproduto (idtipoproduto) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE tipoproduto
+  OWNER TO postgres;
+
+-- Table: usuario
+
+-- DROP TABLE usuario;
+
+CREATE TABLE usuario
+(
+  idusuario serial NOT NULL,
+  login character varying(45),
+  senha character varying(45),
+  datacriacao character varying(45),
+  CONSTRAINT usuario_pkey PRIMARY KEY (idusuario)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE usuario
+  OWNER TO postgres;

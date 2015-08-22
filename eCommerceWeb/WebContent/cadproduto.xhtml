@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="layoutAdmin.xhtml">
+
+		<ui:define name="content">
+
+			<h1>Cadastro de Produtos</h1>
+			<h:form id="fCadProd" enctype="multipart/form-data">
+				<p:panel>
+					<p:growl id="growl" showDetail="true" sticky="true" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Descrição: " />
+						<p:inputText id="descricao"
+							value="#{produtoBean.produto.descricao}" required="true"
+							requiredMessage="Descrição é de preenchimento Obrigatório">
+						</p:inputText>
+						<p:outputLabel value="Preço: " />
+						<p:inputText id="preco" value="#{produtoBean.produto.preco}"
+							required="true"
+							requiredMessage="Preço é de preenchimento Obrigatório">
+						</p:inputText>
+						<p:outputLabel value="Categoria: " />
+						<h:selectOneMenu value="#{produtoBean.produto.categoria}"
+							required="true" requiredMessage="Categoria é Obrigatório"
+							id="categ">
+							<f:selectItem itemLabel="" itemValue="" />
+							<f:selectItems value="#{categoriaBean.listaCategoria}" var="cat"
+								itemLabel="${cat.descricao}" />
+						</h:selectOneMenu>
+						<p:outputLabel value="Marca: " />
+						<h:selectOneMenu value="#{produtoBean.produto.marca}"
+							required="true" requiredMessage="Marca é Obrigatório">
+							<f:selectItem itemLabel="" itemValue="" />
+							<f:selectItems value="#{marcaBean.listaMarcas}"
+								itemLabel="${marcas.descricao}" var="marcas" />
+						</h:selectOneMenu>
+						<p:outputLabel value="Tipo Produto: " />
+						<h:selectOneMenu value="#{produtoBean.produto.tipoproduto}"
+							required="true" requiredMessage="Tipo Produto é Obrigatório">
+							<f:selectItem itemLabel="" itemValue="" />
+							<f:selectItems value="#{tipoProdutoBean.listaTipoProduto}"
+								itemLabel="${tipos.descricao}" var="tipos" />
+						</h:selectOneMenu>
+						<!-- <h:inputFile value="#{produtoBean.fotografia}" /> -->
+						<p:fileUpload value="#{produtoBean.fotografia}" mode="simple"
+							id="testeFoto" />
+
+						<!-- <h:graphicImage id="image" alt="uploaded image" url="/image" /> -->
+
+						<h:commandButton value="Salvar" action="#{produtoBean.salvar}"
+							height="20" styleClass="tamanho" />
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			<p:panel>
+				<h:form style="text-align: center" id="dadosProd">
+					<p:dataTable value="#{produtoBean.listaProdutos}" var="produtos"
+						widgetVar="tblProd" emptyMessage="Nenhuma Produto cadastrada.">
+						<p:column headerText="Descricao" style="width:24%">
+							<h:outputText value="#{produtos.descricao}" />
+						</p:column>
+
+						<p:column headerText="Preço" style="width:24%">
+							<h:outputText value="#{produtos.preco}" />
+						</p:column>
+						<p:column style="width:32px;text-align: center">
+							<p:commandButton update="fCadProd" icon="ui-icon-search"
+								title="View">
+								<f:setPropertyActionListener value="#{produtos}"
+									target="#{produtoBean.produto}" />
+							</p:commandButton>
+						</p:column>
+						<p:column style="width:32px;text-align: center">
+								<p:commandButton id="getFoto" update="getProd"
+									oncomplete="PF('produtoDialog').show()" icon="ui-icon-plus"
+									title="visualizar imagens"
+									action="#{produtoBean.listarFotos}">
+									<f:setPropertyActionListener value="#{produtos}"
+										target="#{produtoBean.produto}" />
+								</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:form>
+				<h:form id="getProd">
+				<!-- Dialog para apresentar a lista de Fotos -->
+						<p:dialog header="#{produtoBean.produtoSalvo.descricao}"
+							widgetVar="produtoDialog" position="center top" resizable="false"
+							id="produtoDlg" showEffect="fade" hideEffect="explode"
+							modal="true" draggable="true" maximizable="true"
+							minimizable="true">
+							<h:panelGrid id="infoProduto" columns="2" style="margin:0 auto;">
+								<h:outputText value="Nenhnuma imagem encontrada"
+									rendered="#{produtoBean.fotos.size() == 0}" />
+								<p:galleria var="f" value="#{produtoBean.fotos}"
+									showCaption="true" panelWidth="400" panelHeight="200"
+									autoPlay="false">
+									<p:graphicImage value="/tmp/#{f.descricao}" cache="false"
+									title="#{f.descricao}" />
+								</p:galleria>
+							</h:panelGrid>
+						</p:dialog>
+				
+				
+				</h:form>
+			</p:panel>
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

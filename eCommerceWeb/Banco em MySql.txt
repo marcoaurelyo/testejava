@@ -1,0 +1,139 @@
+CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
+  `idCliente` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `nome` VARCHAR(45) NULL COMMENT '',
+  `cpfcgc` VARCHAR(20) NULL COMMENT '',
+  `sexo` VARCHAR(1) NULL COMMENT '',
+  `datanascimento` DATE NULL COMMENT '',
+  `idUsuario` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`idCliente`)  COMMENT '',
+  INDEX `fk_Cliente_Usuario_idx` (`idUsuario` ASC)  COMMENT '',
+  CONSTRAINT `fk_Cliente_Usuario`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `mydb`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Usuario` (
+  `idUsuario` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `login` VARCHAR(45) NULL COMMENT '',
+  `senha` VARCHAR(45) NULL COMMENT '',
+  `datacriacao` VARCHAR(45) NULL COMMENT '',
+  PRIMARY KEY (`idUsuario`)  COMMENT '')
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Marca` (
+  `idMarca` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `descricao` VARCHAR(45) NULL COMMENT '',
+  `Usuario_idUsuario` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`idMarca`)  COMMENT '',
+  INDEX `fk_Marca_Usuario1_idx` (`Usuario_idUsuario` ASC)  COMMENT '',
+  CONSTRAINT `fk_Marca_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `mydb`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Categoria` (
+  `idCategoria` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `descricao` VARCHAR(45) NULL COMMENT '',
+  `Usuario_idUsuario` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`idCategoria`)  COMMENT '',
+  INDEX `fk_Categoria_Usuario1_idx` (`Usuario_idUsuario` ASC)  COMMENT '',
+  CONSTRAINT `fk_Categoria_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `mydb`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `mydb`.`TipoProduto` (
+  `idTipoProduto` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `descricao` VARCHAR(45) NULL COMMENT '',
+  `Usuario_idUsuario` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`idTipoProduto`)  COMMENT '',
+  INDEX `fk_TipoProduto_Usuario1_idx` (`Usuario_idUsuario` ASC)  COMMENT '',
+  CONSTRAINT `fk_TipoProduto_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `mydb`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Produto` (
+  `idProduto` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `descricao` VARCHAR(45) NULL COMMENT '',
+  `preco` DOUBLE NULL COMMENT '',
+  `idCategoria` INT NOT NULL COMMENT '',
+  `idMarca` INT NOT NULL COMMENT '',
+  `idTipoProduto` INT NOT NULL COMMENT '',
+  `idUsuario` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`idProduto`)  COMMENT '',
+  INDEX `fk_Produto_Categoria1_idx` (`idCategoria` ASC)  COMMENT '',
+  INDEX `fk_Produto_Marca1_idx` (`idMarca` ASC)  COMMENT '',
+  INDEX `fk_Produto_TipoProduto1_idx` (`idTipoProduto` ASC)  COMMENT '',
+  INDEX `fk_Produto_Usuario1_idx` (`idUsuario` ASC)  COMMENT '',
+  CONSTRAINT `fk_Produto_Categoria1`
+    FOREIGN KEY (`idCategoria`)
+    REFERENCES `mydb`.`Categoria` (`idCategoria`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Produto_Marca1`
+    FOREIGN KEY (`idMarca`)
+    REFERENCES `mydb`.`Marca` (`idMarca`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Produto_TipoProduto1`
+    FOREIGN KEY (`idTipoProduto`)
+    REFERENCES `mydb`.`TipoProduto` (`idTipoProduto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Produto_Usuario1`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `mydb`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Pedido` (
+  `idPedido` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `precototal` DOUBLE NULL COMMENT '',
+  `idUsuario` INT NOT NULL COMMENT '',
+  `idCLiente` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`idPedido`)  COMMENT '',
+  INDEX `fk_Pedido_Usuario1_idx` (`idUsuario` ASC)  COMMENT '',
+  INDEX `fk_Pedido_Cliente1_idx` (`idCLiente` ASC)  COMMENT '',
+  CONSTRAINT `fk_Pedido_Usuario1`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `mydb`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Pedido_Cliente1`
+    FOREIGN KEY (`idCLiente`)
+    REFERENCES `mydb`.`Cliente` (`idCliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `mydb`.`ItemPedido` (
+  `idItemPedido` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `quantidade` INT NULL COMMENT '',
+  `precounitario` DOUBLE NULL COMMENT '',
+  `precoTotal` DOUBLE NULL COMMENT '',
+  `idPedido` INT NOT NULL COMMENT '',
+  `idProduto` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`idItemPedido`)  COMMENT '',
+  INDEX `fk_ItemPedido_Pedido1_idx` (`idPedido` ASC)  COMMENT '',
+  INDEX `fk_ItemPedido_Produto1_idx` (`idProduto` ASC)  COMMENT '',
+  CONSTRAINT `fk_ItemPedido_Pedido1`
+    FOREIGN KEY (`idPedido`)
+    REFERENCES `mydb`.`Pedido` (`idPedido`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ItemPedido_Produto1`
+    FOREIGN KEY (`idProduto`)
+    REFERENCES `mydb`.`Produto` (`idProduto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB

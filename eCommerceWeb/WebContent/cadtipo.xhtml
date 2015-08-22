@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="layoutAdmin.xhtml">
+
+		<ui:define name="content">
+
+			<h1>Cadastro de Tipo de Produtos</h1>
+			<h:form id="fCadTipo">
+				<p:panel>
+					<p:growl id="growl" showDetail="true" sticky="true" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Descrição: " />
+						<p:inputText id="descricao"
+							value="#{tipoProdutoBean.tipoProduto.descricao}" required="true"
+							requiredMessage="Descrição é de preenchimento Obrigatório"></p:inputText>
+						<p:outputLabel value="Status: " />
+						<h:selectOneMenu value="#{tipoProdutoBean.tipoProduto.status}"
+							required="true" requiredMessage="Status Obrigatório">
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItems value="#{tipoProdutoBean.opStatus}" />
+						</h:selectOneMenu>
+						<h:commandButton value="Salvar" action="#{tipoProdutoBean.salvar}"
+							height="20" styleClass="tamanho" />
+					</h:panelGrid>
+				</p:panel>
+
+
+			</h:form>
+			<p:panel>
+				<h:form style="text-align: center" id="dadosTipo">
+					<p:dataTable value="#{tipoProdutoBean.listaTipoProduto}"
+						var="tipos" widgetVar="tblTipo"
+						emptyMessage="Nenhuma marca cadastrada.">
+						<p:column headerText="Descricao" style="width:24%">
+							<h:outputText value="#{tipos.descricao}" />
+						</p:column>
+
+						<p:column headerText="Status" style="width:24%">
+							<h:outputText value="#{tipos.status}" />
+						</p:column>
+						<p:column style="width:32px;text-align: center">
+							<p:commandButton update="fCadTipo" icon="ui-icon-search"
+								title="View">
+								<f:setPropertyActionListener value="#{tipos}"
+									target="#{tipoProdutoBean.tipoProduto}" />
+							</p:commandButton>
+						</p:column>
+
+
+					</p:dataTable>
+				</h:form>
+			</p:panel>
+
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

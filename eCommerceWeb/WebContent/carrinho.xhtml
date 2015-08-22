@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui">
+<h:body>
+
+	<ui:composition template="layout.xhtml">
+		<ui:define name="content">
+			<h:form id="form">
+
+				<p:panel header="Carrinho de compras">
+					<p:dataTable id="cartTable" var="item" 
+						value="#{carrinhoBean.listaProdutos}">
+						<p:column width="100" id="modelHeader">
+							<f:facet name="header">  
+                                                    Descricao  
+                                            </f:facet>
+							<h:outputText value="#{item.produto.descricao}" />
+						</p:column>
+
+						<p:column width="50">
+							<f:facet name="header">  
+                                                    Quantidade  
+                                            </f:facet>
+							<p:inputText value="#{item.quantidade}" size="2" maxlength="2" />
+						</p:column>
+
+						<p:column width="50">
+							<f:facet name="header">  
+                                                    Preco Unitario  
+                                            </f:facet>
+							<h:outputText value="#{item.precoUnitario}">
+								<f:convertNumber type="currency" />
+							</h:outputText>
+						</p:column>
+
+
+
+
+						<p:column width="10">
+							<f:facet name="header">
+								<h:outputText value="" />
+							</f:facet>
+
+							<p:commandButton value="Remover" id="removeCarinho"
+								action="#{carrinhoBean.removeProduto(item.idItemPedido)}" update="cartTable">
+<!-- 								<f:setPropertyActionListener value="#{id}" -->
+<!-- 									target="#{carrinhoBean.itemPedido}"/>  -->
+									
+							</p:commandButton>
+						</p:column>
+
+						<f:facet name="footer">
+							<h:outputText value="Total do pedido: " />
+							<h:outputText value="#{carrinhoBean.getTotal()}">
+								<f:convertNumber type="currency" />
+							</h:outputText>
+						</f:facet>
+
+
+					</p:dataTable>
+
+				</p:panel>
+
+				<p:commandButton value="Finalizar pedido" id="finalizarPedido"
+					action="#{carrinhoBean.finalizarPedido}" update="form">
+				</p:commandButton>
+
+
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

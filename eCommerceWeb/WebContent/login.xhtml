@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+
+<h:body>
+
+	<ui:composition template="layout.xhtml">
+		<ui:define name="content">
+			<p:outputLabel value="Login" />
+				<h:form>
+					<p:growl id="growl" showDetail="true" sticky="true" />
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Usuario:" />
+						<p:inputText value="#{loginBean.usuario}" required="true"
+							requiredMessage="Campo usuario deve ser preenchido" />
+						<p:outputLabel value="Senha:" />
+						<p:password value="#{loginBean.senha}" required="true"
+							requiredMessage="Campo senha deve ser preenchido" />
+					</h:panelGrid>
+					<h:commandButton value="Entrar" action="#{loginBean.validaLogin()}"
+						image="resources/login-icon.png" height="20" styleClass="tamanho" />
+				</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

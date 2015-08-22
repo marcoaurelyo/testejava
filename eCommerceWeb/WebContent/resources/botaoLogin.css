@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+
+.tamanho {
+	text-align: right;
+	max-height: 80px;
+	max-width: 80px;
+	width: auto;
+	height: auto;
+	position:relative;
+	left: 250px;
+	
+	
+	
+	
+	
+}
